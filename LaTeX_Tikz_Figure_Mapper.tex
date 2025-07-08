@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[margin=1in]{geometry}
+\usepackage{caption}
+\captionsetup{labelfont=bf}
+
+\begin{document}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.9, every node/.style={font=\small}]
+
+% Panel A: Original Data
+\node at (0,5.5) {\textbf{(A) Original Data Cloud}};
+\draw[thick] (0,0) circle (1.5);
+\foreach \angle in {0,30,...,330} {
+    \node[circle, fill=black, inner sep=1.2pt] at ({1.5*cos(\angle)+rand*0.2-0.1}, {1.5*sin(\angle)+rand*0.2-0.1}) {};
+}
+
+% Panel B: Filter Function Coloring
+\node at (5,5.5) {\textbf{(B) Filter Function}};
+\draw[thick] (5,0) circle (1.5);
+\foreach \angle in {0,30,...,330} {
+    \definecolor{mycolor}{rgb}{\angle/360,0.3,0.7}
+    \fill[mycolor] ({5+1.5*cos(\angle)+rand*0.2-0.1}, {1.5*sin(\angle)+rand*0.2-0.1}) circle (1.5pt);
+}
+\draw[->,thick] (3.5,-2) -- (6.5,-2) node[midway,below]{\small Filter (e.g. angle)};
+
+% Panel C: Overlapping Intervals and Clusters
+\node at (0,-4) {\textbf{(C) Overlapping Filter Intervals}};
+\draw[thick] (-1.5,-6.5) -- (1.5,-6.5);
+\foreach \x in {-1.5,-1,-0.5,0,0.5,1} {
+    \draw[fill=blue!10,opacity=0.4] (\x,-6.8) rectangle ++(1,-0.4);
+}
+\foreach \x in {-1.0,-0.5,0.0,0.5,1.0} {
+    \node[circle, draw=blue!50, fill=blue!10, minimum size=8pt] at (\x,-7.5) {};
+}
+
+\node at (0,-8.3) {\small Slices with Clusters};
+
+% Panel D: Mapper Graph
+\node at (5,-4) {\textbf{(D) Mapper Graph}};
+\draw[thick] (4,-6.8) circle (0.3);
+\draw[thick] (5,-7.5) circle (0.3);
+\draw[thick] (6,-6.8) circle (0.3);
+\draw[thick] (5,-5.9) circle (0.3);
+
+\draw[thick] (4,-6.8) -- (5,-7.5);
+\draw[thick] (5,-7.5) -- (6,-6.8);
+\draw[thick] (6,-6.8) -- (5,-5.9);
+\draw[thick] (5,-5.9) -- (4,-6.8);
+\draw[thick] (4,-6.8) -- (6,-6.8);
+
+\node at (5,-8.3) {\small Graph summarizes shape};
+
+\end{tikzpicture}
+\caption{Illustration of the Mapper algorithm. (A) Original noisy circle point cloud. (B) Filter function assigns scalar values (e.g., angle). (C) Overlapping filter intervals lead to local clustering in slices. (D) Mapper graph encodes connectivity between clusters to reveal data shape (e.g., a loop).}
+\label{fig:mapper-schematic}
+\end{figure}
+
+\end{document}
